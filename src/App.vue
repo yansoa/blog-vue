@@ -21,8 +21,8 @@ const navigateToUser = () => {
   router.push({
     name: 'users',
     params: {
-      id: 'some-id',
-      username: 'some-username'
+      id: '2',
+      username: 'yansoa'
     }
   });
 }
