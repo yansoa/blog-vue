@@ -1,6 +1,7 @@
 <template>
   <div>
     <PiniaDemo></PiniaDemo>
+    <AxiosDemo></AxiosDemo>
     <p><router-link to="/">Go to Index</router-link></p>
     <p><router-link to="/home">Go to Home</router-link></p>
     <!-- 如果有一个对应 /users 的路由，可以使用这个链接 -->
@@ -12,6 +13,7 @@
 </template>
 
 <script setup>
+import AxiosDemo from './components/AxiosDemo.vue';
 import PiniaDemo from './components/PiniaDemo.vue';
 import { useRouter } from 'vue-router';
 
