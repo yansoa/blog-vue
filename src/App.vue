@@ -1,5 +1,5 @@
 <template>
-  <Login></Login>
+  <!-- <Login></Login> -->
   <!--  <div>
     
 
@@ -13,14 +13,15 @@
   <!-- <button type="button" @click="navigateToUser">Navigate to User</button>
   <router-view></router-view>
   </div> -->
+  <router-view></router-view>
 </template>
 
 <script setup>
 import Login from './views/Login.vue';
 import AxiosDemo from './components/AxiosDemo.vue';
-import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router';
 
-const router = useRouter();
+// const router = useRouter();
 
 // const navigateToUser = () => {
 //   router.push({
