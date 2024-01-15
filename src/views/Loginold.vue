@@ -1,14 +1,13 @@
 <template>
   <div class="login-container">
-    <el-card class="login-card">
+    <el-card class="box-card">
       <div class="login-title">管理员登录</div>
-      <el-form :model="loginForm" :ref="loginFormRef" :rules="loginRules" label-width="80px">
+      <el-form :model="loginInfo" :ref="loginRef" :rules="rules" label-width="80px">
         <el-form-item prop="username" label="用户名">
-          <el-input v-model="loginForm.username" clearable placeholder="请输入你的用户名" :prefix-icon="User"></el-input>
+          <el-input v-model="loginInfo.username" clearable placeholder="请输入你的用户名" :prefix-icon="User"></el-input>
         </el-form-item>
         <el-form-item prop="password" label="密码">
-          <el-input v-model="loginForm.password" clearable type="password" placeholder="请输入你的密码"
-            :prefix-icon="Lock"></el-input>
+          <el-input v-model="loginInfo.password" clearable type="password" placeholder="请输入你的密码" :prefix-icon="Lock"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button :disabled="LoginButtonDisabled" type="primary" @click="submitForm">登录</el-button>
@@ -19,20 +18,25 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, reactive, onMounted } from 'vue';
 import { User, Lock } from '@element-plus/icons-vue';
 
-const loginFormRef = ref(null);
-
-const loginForm = ref({
-  username: '',
-  password: ''
+const loginInfo = reactive({
+  username: "",
+  password: ""
 });
 
-const LoginButtonDisabled = ref(true);
+const loginRef = ref(); // 确保这部分在 setup 函数内
 
-watch([() => loginForm.username, () => loginForm.password], () => {
-  loginFormRef.value.validate((valid) => {
+const rules = reactive({
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+});
+
+let LoginButtonDisabled = ref(true);
+
+watch([() => loginInfo.username, () => loginInfo.password], () => {
+  loginRef.value.validate((valid) => {
     if (valid) {
       LoginButtonDisabled.value = false;
     } else {
@@ -41,16 +45,10 @@ watch([() => loginForm.username, () => loginForm.password], () => {
   });
 });
 
-const loginRules = ref({
-  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-});
-
 const submitForm = () => {
-  loginFormRef.value.validate((valid) => {
+  loginRef.value.validate((valid) => {
     if (valid) {
-      // Your login logic here
-      console.log('Login successful');
+      console.log('登录成功');
     }
   });
 };
@@ -64,7 +62,7 @@ const submitForm = () => {
   height: 100vh;
 }
 
-.login-card {
+.box-card {
   width: 400px;
 }
 

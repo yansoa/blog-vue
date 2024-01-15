@@ -1,93 +1,96 @@
-<script setup>
-import { reactive, ref, watch } from 'vue';
-import { User, Lock } from '@element-plus/icons-vue'
-// import {login} from '../api/login.js'
-// import { ElMessage } from 'element-plus'
-// import {CONFIG} from '../config/index.js'
-import { useRouter } from 'vue-router'
-const loginInfo = reactive({
-  username: "",
-  password: ""
-})
-const router = useRouter()
-const loginRef = ref()
-const rules = reactive({
-  username: [{ required: true, message: '请输入用户名', trigger: 'blur' },],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' },],
-})
-let loginButtonDisabled = ref(true)
-// 监听username和password输入的情况
-watch([() => loginInfo.username, () => loginInfo.password], () => {
-  loginRef.value.validate((valid) => {
-    // valid => true
-    if (valid) {
-      // 表单校验成功
-      loginButtonDisabled.value = false
-    } else {
-      loginButtonDisabled.value = true
-    }
-  })
-})
-// 实现一个登录的接口
-const submitForm = () => {
-  console.log("loginInfo:", loginInfo)
-  login(loginInfo.username, login.password).then((response) => {
-    console.log("登录response:", response)
-    if (response.data.status == 200) {
-      // 先拿到token
-      const token = response.data.data.token
-      window.localStorage.setItem(CONFIG.TOKEN_NAME, token)
-      // 登录成功
-      ElMessage({
-        message: response.data.message,
-        type: 'success',
-      })
-      // 登录成功跳转到 首页
-      router.replace("/")
-    }
-  })
-}
-</script>
-
 <template>
-  <!-- 当我们无法控制某个元素时，可以加一层div去控制 -->
-  <div id="login" style="width: 100vw;">
+  <div class="login-container">
     <el-card class="box-card">
-      <h2>后台管理系统</h2>
-      <el-form ref="loginRef" :model="loginInfo" :rules="rules">
-        <el-form-item prop="username" class="form-item">
-          <el-input placeholder="请输入用户名" clearable :prefix-icon="User" v-model="loginInfo.username" />
+      <h2>管理员登录</h2>
+      <el-form :model="loginInfo" ref="loginRef" :rules="rules" label-width="80px">
+        <el-form-item prop="username" label="用户名">
+          <el-input v-model="loginInfo.username" clearable placeholder="请输入你的用户名" :prefix-icon="User"></el-input>
         </el-form-item>
-        <el-form-item prop="password" class="form-item">
-          <el-input placeholder="请输入密码" :prefix-icon="Lock" clearable show-password v-model="loginInfo.password"
-            type="password" autocomplete="off" />
+        <el-form-item prop="password" label="密码">
+          <el-input v-model="loginInfo.password" clearable type="password" placeholder="请输入你的密码" :prefix-icon="Lock"></el-input>
         </el-form-item>
-
         <el-form-item>
-          <el-button style="margin: 10px auto 10px auto;" :disabled="loginButtonDisabled" type="primary"
-            @click="submitForm()">登录</el-button>
+          <el-button :disabled="LoginButtonDisabled" type="primary" @click="submitForm">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
   </div>
 </template>
 
-<style scoped>
-.text {
-  font-size: 14px;
-}
+<script setup>
+import { ref, watch, reactive, onMounted } from 'vue';
+import { User, Lock } from '@element-plus/icons-vue';
 
-.item {
-  padding: 18px 0;
+const loginInfo = reactive({
+  username: "",
+  password: ""
+});
+
+const loginRef = ref(); // 确保这部分在 setup 函数内
+
+const rules = reactive({
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+});
+
+let LoginButtonDisabled = ref(true);
+
+watch([() => loginInfo.username, () => loginInfo.password], () => {
+  loginRef.value.validate((valid) => {
+    if (valid) {
+      LoginButtonDisabled.value = false;
+    } else {
+      LoginButtonDisabled.value = true;
+    }
+  });
+});
+
+const submitForm = () => {
+  loginRef.value.validate((valid) => {
+    if (valid) {
+      console.log('登录成功');
+    }
+  });
+};
+watch([() => loginInfo.username, () => loginInfo.password], () => {
+  try {
+    loginRef.value.validate((valid) => {
+      if (valid) {
+        LoginButtonDisabled.value = false;
+      } else {
+        LoginButtonDisabled.value = true;
+      }
+    });
+  } catch (error) {
+    console.error('Error in watcher callback:', error);
+  }
+});
+
+</script>
+
+<style scoped>
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 .box-card {
-  width: 480px;
-  margin: 0 auto;
+  width: 400px;
 }
 
-.form-item {
-  width: 240px;
-  margin: 0 auto 20px auto;
+.login-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.el-form-item {
+  text-align: center;
+}
+
+.el-button {
+  margin-left: 70px;
 }
 </style>
