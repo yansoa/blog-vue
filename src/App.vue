@@ -18,7 +18,6 @@
 <script setup>
 import Login from './views/Login.vue';
 import AxiosDemo from './components/AxiosDemo.vue';
-import PiniaDemo from './components/PiniaDemo.vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();

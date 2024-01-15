@@ -11,7 +11,7 @@
             :prefix-icon="Lock"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm">登录</el-button>
+          <el-button :disabled="LoginButtonDisabled" type="primary" @click="submitForm">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { User, Lock } from '@element-plus/icons-vue';
 
 const loginFormRef = ref(null);
@@ -29,9 +29,32 @@ const loginForm = ref({
   password: ''
 });
 
+const LoginButtonDisabled = ref(true);
+
 const loginRules = ref({
-  username: [{ required: true, message: 'Please enter your username', trigger: 'blur' }],
-  password: [{ required: true, message: 'Please enter your password', trigger: 'blur' }]
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+});
+
+onMounted(() => {
+  // Access el-form instance using refs
+  loginFormRef.value.validate((valid) => {
+    if (valid) {
+      LoginButtonDisabled.value = false;
+    } else {
+      LoginButtonDisabled.value = true;
+    }
+  });
+});
+
+watch([() => loginForm.username, () => loginForm.password], () => {
+  loginFormRef.value.validate((valid) => {
+    if (valid) {
+      LoginButtonDisabled.value = false;
+    } else {
+      LoginButtonDisabled.value = true;
+    }
+  });
 });
 
 const submitForm = () => {
@@ -39,8 +62,6 @@ const submitForm = () => {
     if (valid) {
       // Your login logic here
       console.log('Login successful');
-    } else {
-      return false;
     }
   });
 };
@@ -66,11 +87,9 @@ const submitForm = () => {
 
 .el-form-item {
   text-align: center;
-  /* 让表单项内的内容居中显示 */
 }
 
 .el-button {
   margin-left: 70px;
-
 }
 </style>
