@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-card class="login-card">
       <div class="login-title">管理员登录</div>
-      <el-form :model="loginForm" ref="loginFormRef" :rules="loginRules" label-width="80px">
+      <el-form :model="loginForm" :ref="loginFormRef" :rules="loginRules" label-width="80px">
         <el-form-item prop="username" label="用户名">
           <el-input v-model="loginForm.username" clearable placeholder="请输入你的用户名" :prefix-icon="User"></el-input>
         </el-form-item>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import { User, Lock } from '@element-plus/icons-vue';
 
 const loginFormRef = ref(null);
@@ -31,22 +31,6 @@ const loginForm = ref({
 
 const LoginButtonDisabled = ref(true);
 
-const loginRules = ref({
-  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-});
-
-onMounted(() => {
-  // Access el-form instance using refs
-  loginFormRef.value.validate((valid) => {
-    if (valid) {
-      LoginButtonDisabled.value = false;
-    } else {
-      LoginButtonDisabled.value = true;
-    }
-  });
-});
-
 watch([() => loginForm.username, () => loginForm.password], () => {
   loginFormRef.value.validate((valid) => {
     if (valid) {
@@ -55,6 +39,11 @@ watch([() => loginForm.username, () => loginForm.password], () => {
       LoginButtonDisabled.value = true;
     }
   });
+});
+
+const loginRules = ref({
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 });
 
 const submitForm = () => {
