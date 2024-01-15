@@ -1,13 +1,13 @@
 <template>
   <div class="login-container">
     <el-card class="box-card">
-      <h2>管理员登录</h2>
+      <div class="login-title">管理员登录</div>
       <el-form :model="loginInfo" ref="loginRef" :rules="rules" label-width="80px">
         <el-form-item prop="username" label="用户名">
           <el-input v-model="loginInfo.username" clearable placeholder="请输入你的用户名" :prefix-icon="User"></el-input>
         </el-form-item>
         <el-form-item prop="password" label="密码">
-          <el-input v-model="loginInfo.password" clearable type="password" placeholder="请输入你的密码" :prefix-icon="Lock"></el-input>
+          <el-input v-model="loginInfo.password" show-password clearable type="password" placeholder="请输入你的密码" :prefix-icon="Lock"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button :disabled="LoginButtonDisabled" type="primary" @click="submitForm">登录</el-button>
@@ -91,6 +91,7 @@ watch([() => loginInfo.username, () => loginInfo.password], () => {
 }
 
 .el-button {
-  margin-left: 70px;
+  width: 20%;
+  margin: 0 150px 0 auto;
 }
 </style>
