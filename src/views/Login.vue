@@ -1,84 +1,94 @@
+<script setup>
+import { reactive, ref, watch } from 'vue';
+import { User, Lock } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
+const loginInfo = reactive({
+  username: "",
+  password: ""
+})
+const router = useRouter()
+const loginRef = ref()
+const rules = reactive({
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+  ],
+})
+let loginButtonDisabled = ref(true)
+// 监听username和password输入的情况
+watch([() => loginInfo.username, () => loginInfo.password], () => {
+  loginRef.value.validate((valid) => {
+    // valid => true
+    if (valid) {
+      // 表单校验成功
+      loginButtonDisabled.value = false
+    } else {
+      loginButtonDisabled.value = true
+    }
+  })
+})
+// 实现一个登录的接口
+const submitForm = () => {
+  console.log("loginInfo:", loginInfo)
+  login(loginInfo.username, login.password).then((response) => {
+    console.log("登录response:", response)
+    if (response.data.status == 200) {
+      // 先拿到token
+      const token = response.data.data.token
+      window.localStorage.setItem(CONFIG.TOKEN_NAME, token)
+      // 登录成功
+      ElMessage({
+        message: response.data.message,
+        type: 'success',
+      })
+      // 登录成功跳转到 首页
+      router.replace("/")
+    }
+  })
+}
+</script>
+
 <template>
-  <div class="login-container">
-    <el-card class="login-card">
-      <div class="login-title">管理员登录</div>
-      <el-form :model="loginForm" :ref="loginFormRef" :rules="loginRules" label-width="80px">
-        <el-form-item prop="username" label="用户名">
-          <el-input v-model="loginForm.username" clearable placeholder="请输入你的用户名" :prefix-icon="User"></el-input>
+  <!-- 当我们无法控制某个元素时，可以加一层div去控制 -->
+  <div id="login" style="width: 100vw;">
+    <el-card class="box-card">
+      <h2>后台管理系统</h2>
+      <el-form ref="loginRef" :model="loginInfo" :rules="rules">
+        <el-form-item prop="username" class="form-item">
+          <el-input placeholder="请输入用户名" clearable :prefix-icon="User" v-model="loginInfo.username" />
         </el-form-item>
-        <el-form-item prop="password" label="密码">
-          <el-input v-model="loginForm.password" clearable type="password" placeholder="请输入你的密码吧"
-            :prefix-icon="Lock"></el-input>
+        <el-form-item prop="password" class="form-item">
+          <el-input placeholder="请输入密码" :prefix-icon="Lock" show-password v-model="loginInfo.password" type="password"
+            autocomplete="off" />
         </el-form-item>
+
         <el-form-item>
-          <el-button :disabled="LoginButtonDisabled" type="primary" @click="submitForm">登录</el-button>
+          <el-button style="margin: 10px auto 10px auto;" :disabled="loginButtonDisabled" type="primary"
+            @click="submitForm()">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
   </div>
 </template>
 
-<script setup>
-import { ref, watch } from 'vue';
-import { User, Lock } from '@element-plus/icons-vue';
-
-const loginFormRef = ref(null);
-
-const loginForm = ref({
-  username: '',
-  password: ''
-});
-
-const LoginButtonDisabled = ref(true);
-
-watch([() => loginForm.username, () => loginForm.password], () => {
-  loginFormRef.value.validate((valid) => {
-    if (valid) {
-      LoginButtonDisabled.value = false;
-    } else {
-      LoginButtonDisabled.value = true;
-    }
-  });
-});
-
-const loginRules = ref({
-  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-});
-
-const submitForm = () => {
-  loginFormRef.value.validate((valid) => {
-    if (valid) {
-      // Your login logic here
-      console.log('Login successful');
-    }
-  });
-};
-</script>
-
 <style scoped>
-.login-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+.text {
+  font-size: 14px;
 }
 
-.login-card {
-  width: 400px;
+.item {
+  padding: 18px 0;
 }
 
-.login-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
+.box-card {
+  width: 480px;
+  margin: 0 auto;
 }
 
-.el-form-item {
-  text-align: center;
-}
-
-.el-button {
-  margin-left: 70px;
+.form-item {
+  width: 240px;
+  margin: 0 auto 20px auto;
 }
 </style>
