@@ -7,7 +7,7 @@
           <el-input v-model="loginForm.username" clearable placeholder="请输入你的用户名" :prefix-icon="User"></el-input>
         </el-form-item>
         <el-form-item prop="password" label="密码">
-          <el-input v-model="loginForm.password" clearable type="password" placeholder="请输入你的密码"
+          <el-input v-model="loginForm.password" clearable type="password" placeholder="请输入你的密码吧"
             :prefix-icon="Lock"></el-input>
         </el-form-item>
         <el-form-item>
