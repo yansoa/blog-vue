@@ -11,5 +11,7 @@ import router from './router'
 const app = createApp(App)
 const pinia = createPinia()
 
+
 app.use(router).use(pinia).use(ElementPlus)
 app.mount('#app')
+

@@ -5,26 +5,21 @@ import { createRouter, createWebHistory } from 'vue-router';
 const Home = () => import('../views/Home.vue');
 const Users = () => import('../views/Users.vue');
 const Index = () => import('../views/Index.vue');
+const Login = () => import('../views/Login.vue');
+const Logout = () => import('../views/Logout.vue');
 
 // 定义路由
-const routes = [
+const listRoutes = [
     { path: '/', component: Index },
     { path: '/home', component: Home },
-    {
-        path: '/users/:id/:username',
-        component: Users,
-        name: 'users',
-        beforeEnter: (to, from, next) => {
-            console.log(to.params); // 打印路由参数
+    { path: '/users/:id/:username', component: Users, name: 'users' },
+    { path: '/login', component: Login },
+    { path: '/logout', component: Logout }
+];
 
-            // 检查参数id是否为'1'
-            if (to.params.id === '1') {
-                next(); // 如果是'1'，继续导航
-            } else {
-                next('/'); // 否则，重定向到首页
-            }
-        }
-    }
+// 创建并配置路由器
+const routes = [
+    ...listRoutes
 ];
 
 // 创建并配置路由器
