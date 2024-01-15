@@ -1,6 +1,9 @@
 <script setup>
 import { reactive, ref, watch } from 'vue';
 import { User, Lock } from '@element-plus/icons-vue'
+// import {login} from '../api/login.js'
+// import { ElMessage } from 'element-plus'
+// import {CONFIG} from '../config/index.js'
 import { useRouter } from 'vue-router'
 const loginInfo = reactive({
   username: "",
@@ -9,12 +12,8 @@ const loginInfo = reactive({
 const router = useRouter()
 const loginRef = ref()
 const rules = reactive({
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-  ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-  ],
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' },],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' },],
 })
 let loginButtonDisabled = ref(true)
 // 监听username和password输入的情况
@@ -60,8 +59,8 @@ const submitForm = () => {
           <el-input placeholder="请输入用户名" clearable :prefix-icon="User" v-model="loginInfo.username" />
         </el-form-item>
         <el-form-item prop="password" class="form-item">
-          <el-input placeholder="请输入密码" :prefix-icon="Lock" show-password v-model="loginInfo.password" type="password"
-            autocomplete="off" />
+          <el-input placeholder="请输入密码" :prefix-icon="Lock" clearable show-password v-model="loginInfo.password"
+            type="password" autocomplete="off" />
         </el-form-item>
 
         <el-form-item>
