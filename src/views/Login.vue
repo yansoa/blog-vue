@@ -1,6 +1,7 @@
 <template>
-  <div class="login-container">
-    <div class="animated-lines"></div>
+  <div class="login-container">  </div>
+    <!-- <div class="animated-lines"></div> -->
+
     <el-card class="box-card">
       <h2>管理员登录</h2>
       <el-form :model="loginInfo" ref="loginRef" :rules="rules" label-width="80px">
@@ -15,7 +16,7 @@
         </el-form-item>
       </el-form>
     </el-card>
-  </div>
+
 </template>
 
 <script setup>
@@ -63,6 +64,17 @@ const submitForm = () => {
 
 <style scoped>
 
+.login-container{
+  background-image:url(https://www4.bing.com//th?id=OHR.ViennaAutumn_ZH-CN7011999199_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  border-radius: 10px;
+  background-size: cover;
+}
 
 .box-card {
   position: relative;
