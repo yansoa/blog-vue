@@ -2,7 +2,7 @@
   <div class="login-container"> </div>
   <!-- <div class="animated-lines"></div> -->
 
-  <el-card class="box-card">
+  <el-card class="el-card">
     <h2>管理员登录</h2>
     <el-form :model="loginInfo" ref="loginRef" :rules="rules" label-width="80px">
       <el-form-item prop="username" label="用户名">
@@ -23,7 +23,8 @@
 import { ref, watch, reactive, onMounted } from 'vue';
 import { User, Lock } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
-
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const loginInfo = reactive({
   username: "",
   password: ""
@@ -57,8 +58,9 @@ const submitForm = () => {
     if (valid) {
       console.log('登录成功');
       ElMessage({ message: '登录成功', type: 'success', })
+      router.replace('/home')
     } else {
-      ElMessage({ message: '登录失败', type: 'success', })
+      ElMessage({ message: '登录失败', type: 'warnning', })
     }
   });
 };
@@ -78,7 +80,7 @@ const submitForm = () => {
   background-size: cover;
 }
 
-.box-card {
+.el-card {
   position: relative;
   width: 400px;
   z-index: 2;
