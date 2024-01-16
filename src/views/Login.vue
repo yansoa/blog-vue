@@ -1,27 +1,28 @@
 <template>
-  <div class="login-container">  </div>
-    <!-- <div class="animated-lines"></div> -->
+  <div class="login-container"> </div>
+  <!-- <div class="animated-lines"></div> -->
 
-    <el-card class="box-card">
-      <h2>管理员登录</h2>
-      <el-form :model="loginInfo" ref="loginRef" :rules="rules" label-width="80px">
-        <el-form-item prop="username" label="用户名">
-          <el-input v-model="loginInfo.username" clearable placeholder="请输入你的用户名" :prefix-icon="User"></el-input>
-        </el-form-item>
-        <el-form-item prop="password" label="密码">
-          <el-input v-model="loginInfo.password" show-password clearable type="password" placeholder="请输入你的密码" :prefix-icon="Lock"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button :disabled="LoginButtonDisabled" type="primary" @click="submitForm">登录</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
-
+  <el-card class="box-card">
+    <h2>管理员登录</h2>
+    <el-form :model="loginInfo" ref="loginRef" :rules="rules" label-width="80px">
+      <el-form-item prop="username" label="用户名">
+        <el-input v-model="loginInfo.username" clearable placeholder="请输入你的用户名" :prefix-icon="User"></el-input>
+      </el-form-item>
+      <el-form-item prop="password" label="密码">
+        <el-input v-model="loginInfo.password" show-password clearable type="password" placeholder="请输入你的密码"
+          :prefix-icon="Lock"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button :disabled="LoginButtonDisabled" type="primary" @click="submitForm">登录</el-button>
+      </el-form-item>
+    </el-form>
+  </el-card>
 </template>
 
 <script setup>
 import { ref, watch, reactive, onMounted } from 'vue';
 import { User, Lock } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus';
 
 const loginInfo = reactive({
   username: "",
@@ -55,7 +56,9 @@ const submitForm = () => {
   loginRef.value.validate((valid) => {
     if (valid) {
       console.log('登录成功');
-      alert('登录成功');
+      ElMessage({ message: '登录成功', type: 'success', })
+    } else {
+      ElMessage({ message: '登录失败', type: 'success', })
     }
   });
 };
@@ -63,9 +66,8 @@ const submitForm = () => {
 
 
 <style scoped>
-
-.login-container{
-  background-image:url(https://www4.bing.com//th?id=OHR.ViennaAutumn_ZH-CN7011999199_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
+.login-container {
+  background-image: url(https://www4.bing.com//th?id=OHR.ViennaAutumn_ZH-CN7011999199_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp);
   position: absolute;
   top: 0;
   left: 0;
@@ -118,9 +120,11 @@ const submitForm = () => {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
